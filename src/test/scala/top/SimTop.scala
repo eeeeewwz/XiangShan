@@ -61,6 +61,8 @@ class SimTop(implicit p: Parameters) extends Module {
   soc.io.pll0_lock := true.B
   soc.io.cacheable_check := DontCare
   soc.io.riscv_rst_vec.foreach(_ := 0x10000000L.U)
+  soc.io.traceCoreInterface.foreach(_.fromEncoder.enable := false.B)
+  soc.io.traceCoreInterface.foreach(_.fromEncoder.stall  := false.B)
 
   // soc.io.rtc_clock is a div100 of soc.io.clock
   val rtcClockDiv = 100

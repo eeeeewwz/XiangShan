@@ -26,6 +26,7 @@ import system.HasSoCParameter
 import device.{IMSICAsync, MsiInfoBundle}
 import coupledL2.tl2chi.{PortIO, AsyncPortIO, CHIAsyncBridgeSource}
 import utility.{IntBuffer, ResetGen}
+import xiangshan.backend.trace.TraceCoreInterface
 
 // This module is used for XSNoCTop for async time domain and divide different
 // voltage domain. Everything in this module should be in the core clock domain
@@ -58,6 +59,7 @@ class XSTileWrap()(implicit p: Parameters) extends LazyModule
       val reset_vector = Input(UInt(PAddrBits.W))
       val cpu_halt = Output(Bool())
       val hartIsInReset = Output(Bool())
+      val traceCoreInterface = new TraceCoreInterface
       val debugTopDown = new Bundle {
         val robHeadPaddr = Valid(UInt(PAddrBits.W))
         val l3MissMatch = Input(Bool())
@@ -89,6 +91,7 @@ class XSTileWrap()(implicit p: Parameters) extends LazyModule
     tile.module.io.reset_vector := io.reset_vector
     io.cpu_halt := tile.module.io.cpu_halt 
     io.hartIsInReset := tile.module.io.hartIsInReset
+    io.traceCoreInterface <> tile.module.io.traceCoreInterface
     io.debugTopDown <> tile.module.io.debugTopDown
     tile.module.io.nodeID.foreach(_ := io.nodeID.get)
 
