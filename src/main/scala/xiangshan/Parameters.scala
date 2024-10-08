@@ -46,6 +46,8 @@ import coupledL2._
 import coupledL2.tl2chi._
 import xiangshan.backend.datapath.WakeUpConfig
 import xiangshan.mem.prefetch.{PrefetcherParams, SMSParams}
+import xiangshan.mem.{MemIssueType, MemIssueParams, MemUnitParams}
+import xiangshan.mem.{StoreDataUnit}
 
 import scala.math.{max, min}
 
@@ -493,6 +495,19 @@ case class XSCoreParameters
     )
   }
 
+  val memUnitParams = Seq(
+    MemUnitParams(name = "STD0", unitType = StoreDataUnit(), dataBits = 128,
+      issueParams = Seq(
+        MemIssueParams(issueType = MemIssueType.StoreData, writebackPort = 0, exceptionOut  = Seq()),
+      ),
+    ),
+    MemUnitParams(name = "STD1", unitType = StoreDataUnit(), dataBits = 128,
+      issueParams = Seq(
+        MemIssueParams(issueType = MemIssueType.StoreData, writebackPort = 0, exceptionOut  = Seq()),
+      )
+    ),
+  )
+
   def PregIdxWidthMax = intPreg.addrWidth max vfPreg.addrWidth
 
   def iqWakeUpParams = {
@@ -773,6 +788,7 @@ trait HasXSParameter {
   def BackendRedirectNum = NumRedirect + 2 //2: ldReplay + Exception
   def FtqRedirectAheadNum = NumRedirect
   def IfuRedirectNum = coreParams.IfuRedirectNum
+  def memUnitParams = coreParams.memUnitParams
   def LoadPipelineWidth = coreParams.LoadPipelineWidth
   def StorePipelineWidth = coreParams.StorePipelineWidth
   def VecLoadPipelineWidth = coreParams.VecLoadPipelineWidth

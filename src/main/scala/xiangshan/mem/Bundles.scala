@@ -82,6 +82,7 @@ object Bundles {
     val schedIdx            = UInt(log2Up(LoadQueueReplaySize).W)
     val causeVec            = ReplayCauseVec()
     // execute
+    val isIq                = Bool()
     val isPrefetch          = Bool()
     val isHWPrefetch        = Bool()
     val isMisalignBuf       = Bool()
@@ -227,6 +228,7 @@ object Bundles {
       ptwBack           := inputReg.ptwBack
       af                := inputReg.af
       mmio              := inputReg.mmio
+      isIq              := inputReg.isIq
       isPrefetch        := inputReg.isPrefetch
       isHWPrefetch      := inputReg.isHWPrefetch
       isMisalignBuf     := inputReg.isMisalignBuf
