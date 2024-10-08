@@ -285,10 +285,6 @@ class LsPrefetchTrainBundle(implicit p: Parameters) extends LsPipelineBundle {
   }
 }
 
-class SqWriteBundle(implicit p: Parameters) extends LsPipelineBundle {
-  val need_rep = Bool()
-}
-
 class LoadForwardQueryIO(implicit p: Parameters) extends XSBundle {
   val vaddr = Output(UInt(VAddrBits.W))
   val paddr = Output(UInt(PAddrBits.W))
