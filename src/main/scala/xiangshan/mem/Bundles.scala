@@ -63,6 +63,7 @@ object Bundles {
     val isVector            = Bool()
     val isForVSnonLeafPTE   = Bool()
     val is128bit            = Bool()
+    val instrType           = UInt(sourceTypeWidth.W)
     val dataWenDup          = Vec(6, Bool())
     // replay
     val replayCarry         = new ReplayCarry(nWays)
@@ -237,6 +238,7 @@ object Bundles {
       isVector          := inputReg.isVector
       lastElem          := inputReg.lastElem
       is128bit          := inputReg.is128bit
+      instrType         := inputReg.instrType
       vecActive         := inputReg.vecActive
       firstEle          := inputReg.firstEle
       unitStrideFof     := inputReg.unitStrideFof
