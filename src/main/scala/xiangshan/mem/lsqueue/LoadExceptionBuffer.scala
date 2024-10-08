@@ -30,6 +30,7 @@ import xiangshan.frontend.FtqPtr
 import xiangshan.ExceptionNO._
 import xiangshan.cache.wpu.ReplayCarry
 import xiangshan.backend.rob.RobPtr
+import xiangshan.mem.Bundles._
 
 class LqExceptionBuffer(implicit p: Parameters) extends XSModule with HasCircularQueuePtrHelper {
   val enqPortNum = LoadPipelineWidth + VecLoadPipelineWidth + 1 // 1 for mmio bus non-data error

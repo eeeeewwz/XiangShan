@@ -33,6 +33,7 @@ import utils._
 import utility._
 import xiangshan.backend.Bundles.{DynInst, MemExuOutput}
 import xiangshan.mem.ReplayCauseNo._
+import xiangshan.mem.Bundles._
 import math._
 
 class VecReplayInfo(implicit p: Parameters) extends XSBundle with HasVLSUParameters {

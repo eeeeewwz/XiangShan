@@ -4,7 +4,8 @@ import chisel3._
 import chisel3.util._
 import org.chipsalliance.cde.config.Parameters
 import xiangshan._
-import xiangshan.mem.{LsPrefetchTrainBundle, L1PrefetchReq}
+import xiangshan.mem.L1PrefetchReq
+import xiangshan.mem.Bundles.LsPrefetchTrainBundle
 import utils._
 import utility._
 

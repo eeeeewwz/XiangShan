@@ -22,7 +22,8 @@ import org.chipsalliance.cde.config.Parameters
 import utility.MemReqSource
 import xiangshan._
 import xiangshan.cache.mmu.TlbRequestIO
-import xiangshan.mem.{LsPrefetchTrainBundle, L1PrefetchReq}
+import xiangshan.mem.L1PrefetchReq
+import xiangshan.mem.Bundles.LsPrefetchTrainBundle
 import xiangshan.backend._
 
 class L2PrefetchReq(implicit p: Parameters) extends XSBundle {

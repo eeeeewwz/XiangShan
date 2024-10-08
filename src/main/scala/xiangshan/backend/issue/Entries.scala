@@ -13,7 +13,8 @@ import xiangshan.backend.datapath.DataSource
 import xiangshan.backend.fu.FuType
 import xiangshan.backend.fu.vector.Utils.NOnes
 import xiangshan.backend.rob.RobPtr
-import xiangshan.mem.{LqPtr, MemWaitUpdateReq, SqPtr}
+import xiangshan.mem.{LqPtr, SqPtr}
+import xiangshan.mem.Bundles.MemWaitUpdateReq
 import xiangshan.backend.issue.EntryBundles._
 
 class Entries(implicit p: Parameters, params: IssueBlockParams) extends XSModule {

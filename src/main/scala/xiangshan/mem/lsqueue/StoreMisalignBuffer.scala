@@ -31,6 +31,7 @@ import xiangshan.ExceptionNO._
 import xiangshan.cache.wpu.ReplayCarry
 import xiangshan.backend.rob.RobPtr
 import xiangshan.backend.Bundles.{MemExuOutput, DynInst}
+import xiangshan.mem.Bundles._
 
 class StoreMisalignBuffer(implicit p: Parameters) extends XSModule
   with HasCircularQueuePtrHelper

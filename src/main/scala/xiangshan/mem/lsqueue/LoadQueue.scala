@@ -32,6 +32,7 @@ import xiangshan.ExceptionNO._
 import xiangshan.mem.mdp._
 import xiangshan.backend.Bundles.{DynInst, MemExuOutput, MemMicroOpRbExt}
 import xiangshan.backend.rob.RobPtr
+import xiangshan.mem.Bundles._
 
 class LqPtr(implicit p: Parameters) extends CircularQueuePtr[LqPtr](
   p => p(XSCoreParamsKey).VirtualLoadQueueSize

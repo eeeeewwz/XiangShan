@@ -36,6 +36,7 @@ import xiangshan.cache.wpu.ReplayCarry
 import xiangshan.cache.mmu.{TlbCmd, TlbHintReq, TlbReq, TlbRequestIO, TlbResp}
 import xiangshan.mem.mdp._
 import xiangshan.mem.ReplayCauseNo._
+import xiangshan.mem.Bundles._
 
 class HybridUnit(implicit p: Parameters) extends XSModule
   with HasLoadHelper

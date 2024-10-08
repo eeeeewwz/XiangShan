@@ -8,7 +8,8 @@ import utils._
 import utility._
 import xiangshan.cache.HasDCacheParameters
 import xiangshan.cache.mmu._
-import xiangshan.mem.{L1PrefetchReq, LsPrefetchTrainBundle}
+import xiangshan.mem.L1PrefetchReq
+import xiangshan.mem.Bundles.LsPrefetchTrainBundle
 import xiangshan.mem.trace._
 import scala.collection.SeqLike
 

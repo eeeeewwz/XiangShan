@@ -31,6 +31,7 @@ import xiangshan.backend._
 import xiangshan.backend.rob.RobLsqIO
 import coupledL2.{CMOReq, CMOResp}
 import xiangshan.backend.fu.FuType
+import xiangshan.mem.Bundles._
 
 class ExceptionAddrIO(implicit p: Parameters) extends XSBundle {
   val isStore = Input(Bool())

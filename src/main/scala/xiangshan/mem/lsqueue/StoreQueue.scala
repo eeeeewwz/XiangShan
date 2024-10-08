@@ -33,6 +33,7 @@ import xiangshan.backend.Bundles.{DynInst, MemExuOutput}
 import xiangshan.backend.decode.isa.bitfield.{Riscv32BitInst, XSInstBitFields}
 import xiangshan.backend.fu.FuConfig._
 import xiangshan.backend.fu.FuType
+import xiangshan.mem.Bundles._
 import xiangshan.ExceptionNO._
 import coupledL2.{CMOReq, CMOResp}
 

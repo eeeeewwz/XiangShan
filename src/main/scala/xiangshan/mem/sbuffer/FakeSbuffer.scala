@@ -22,6 +22,7 @@ import chisel3.util._
 import utility.{XSDebug, XSInfo}
 import xiangshan._
 import xiangshan.cache.{DCacheLineIO, DCacheWordReq, MemoryOpConstants, DCacheWordReqWithVaddr}
+import xiangshan.mem.Bundles._
 
 // Fake Store buffer for XiangShan Out of Order LSU
 //
