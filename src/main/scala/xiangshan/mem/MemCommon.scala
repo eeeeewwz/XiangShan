@@ -76,6 +76,38 @@ object shiftMaskToLow {
   }
 }
 
+object ReplayCauseNo {
+  def memoryAmbiguous = 0
+  def tlbMiss         = 1
+  def forwardFail     = 2
+  def dcacheReplay    = 3
+  def dcacheMiss      = 4
+  def wpuPredictFail  = 5
+  def bankConflict    = 6
+  def rarNack         = 7
+  def rawNack         = 8
+  def nuke            = 9
+
+  def priorities = Seq(
+    memoryAmbiguous,
+    tlbMiss,
+    forwardFail,
+    dcacheReplay,
+    dcacheMiss,
+    wpuPredictFail,
+    bankConflict,
+    rarNack,
+    rawNack,
+    nuke
+  )
+  def allCauses = priorities.length
+}
+
+object ReplayCauseVec {
+  def apply() = Vec(ReplayCauseNo.allCauses, Bool())
+  def apply(init: Bool) = VecInit(Seq.fill(ReplayCauseNo.allCauses)(init))
+}
+
 object AddPipelineReg {
   class PipelineRegModule[T <: Data](gen: T) extends Module {
     val io = IO(new Bundle() {
