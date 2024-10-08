@@ -36,7 +36,7 @@ import math._
 
 object Bundles {
 
-  class LsPipelineBundle(isVectorBundle: Boolean = false)(implicit p: Parameters) extends XSBundle
+  class LsPipelineBundle(val isVectorBundle: Boolean = false)(implicit p: Parameters) extends XSBundle
     with HasTlbConst
     with HasDCacheParameters
     with HasVLSUParameters
