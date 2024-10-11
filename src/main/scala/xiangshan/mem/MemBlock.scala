@@ -28,7 +28,10 @@ import coupledL2.{PrefetchRecv, CMOReq, CMOResp}
 import device.MsiInfoBundle
 import utils._
 import utility._
+import system.SoCParamsKey
 import xiangshan._
+import xiangshan.ExceptionNO._
+import xiangshan.frontend.HasInstrMMIOConst
 import xiangshan.backend.Bundles.{DynInst, MemExuInput, MemExuOutput}
 import xiangshan.backend.ctrlblock.{DebugLSIO, LsTopdownInfo}
 import xiangshan.backend.exu.MemExeUnit
@@ -37,16 +40,13 @@ import xiangshan.backend.fu.FuType._
 import xiangshan.backend.rob.{RobDebugRollingIO, RobPtr}
 import xiangshan.backend.fu.util.{HasCSRConst, SdtrigExt}
 import xiangshan.backend.{TopToBackendBundle, BackendToTopBundle}
-import xiangshan.cache._
-import xiangshan.cache.mmu._
+import xiangshan.backend.datapath.NewPipelineConnect
+import xiangshan.backend.fu.NewCSR.TriggerUtil
 import xiangshan.mem._
 import xiangshan.mem.mdp._
-import xiangshan.frontend.HasInstrMMIOConst
 import xiangshan.mem.prefetch.{BasePrefecher, L1Prefetcher, SMSParams, SMSPrefetcher}
-import xiangshan.backend.datapath.NewPipelineConnect
-import system.SoCParamsKey
-import xiangshan.backend.fu.NewCSR.TriggerUtil
-import xiangshan.ExceptionNO._
+import xiangshan.cache._
+import xiangshan.cache.mmu._
 
 trait HasMemBlockParameters extends HasXSParameter {
   // number of memory units
@@ -235,7 +235,7 @@ class MemBlockInlined()(implicit p: Parameters) extends LazyModule
   val stdUnits = memUnitParams.filter(_.unitType == StoreDataUnit()).map(
     params => LazyModule(new MemUnit(params).suggestName(params.name))
   )
-
+  val memExuBlock = LazyModule(new MemExuBlock)
   val dcache = LazyModule(new DCacheWrapper())
   val uncache = LazyModule(new Uncache())
   val ptw = LazyModule(new L2TLBWrapper())
@@ -357,6 +357,7 @@ class MemBlockInlinedImp(outer: MemBlockInlined) extends LazyModuleImp(outer)
   }
 
   val stdUnitImps = outer.stdUnits.map(_.module)
+  val memExuBlockImp = outer.memExuBlock.module
 
   val loadUnits = Seq.fill(LduCnt)(Module(new LoadUnit))
   val storeUnits = Seq.fill(StaCnt)(Module(new StoreUnit))
@@ -1132,6 +1133,11 @@ class MemBlockInlinedImp(outer: MemBlockInlined) extends LazyModuleImp(outer)
       impl.io.fromCtrl.redirect <> redirect
       impl.io.fromCtrl.hartId   <> io.hartId
       impl.io.fromCtrl.csrCtrl  <> csrCtrl
+      impl.io.fromTlb := DontCare
+      impl.io.fromDCache := DontCare
+      impl.io.fromPmp := DontCare
+      impl.io.toDCache.req.ready := false.B
+      impl.io.toTlb.req.ready := false.B
   }
   stdUnitImps.map(_.io.fromIssue).flatten.zip(io.ooo_to_mem.issueStd).map {
     case (sink, source) =>

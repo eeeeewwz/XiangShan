@@ -593,7 +593,7 @@ class DCacheLoadReqIO(implicit p: Parameters) extends DCacheBundle {
   val s1_paddr_dup_dcache = Output(UInt(PAddrBits.W)) // dcache side paddr
 }
 
-class DCacheLoadRespIO(implicit p: Parameters) extends DCacheWordResp {
+class DCacheLoadRespIO(implicit p: Parameters) extends DCacheBundle {
   val resp                   = Flipped(DecoupledIO(new DCacheWordResp))
   val s1_disable_fast_wakeup = Input(Bool())
   val s2_hit                 = Input(Bool()) // hit signal for lsu,

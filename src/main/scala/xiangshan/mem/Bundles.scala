@@ -59,11 +59,11 @@ object Bundles {
     val wlineflag           = Bool() // store write the whole cache line
     val vaNeedExt           = Bool()
     val isStore             = Bool()
+    val isAtomic            = Bool()
     val isHyper             = Bool()
     val isVector            = Bool()
     val isForVSnonLeafPTE   = Bool()
     val is128bit            = Bool()
-    val instrType           = UInt(sourceTypeWidth.W)
     val dataWenDup          = Vec(6, Bool())
     // replay
     val replayCarry         = new ReplayCarry(nWays)
@@ -109,6 +109,9 @@ object Bundles {
     val vecBaseVaddr        = UInt(VAddrBits.W)
     val vecVaddrOffset      = UInt(VAddrBits.W)
     val vecTriggerMask      = UInt((VLEN/8).W)
+    // pfSource
+    val pfSource            = new L1PrefetchSource
+    val confidence          = UInt(1.W)
 
     def isSWPrefetch: Bool  = isPrefetch && !isHWPrefetch
 
@@ -200,6 +203,24 @@ object Bundles {
       res.isForVSnonLeafPTE := this.isForVSnonLeafPTE
       res
     }
+
+    def fromStorePrefetchReqBundle(input: StorePrefetchReq) = {
+      this := 0.U.asTypeOf(this)
+      this.paddr := input.paddr
+      this.vaddr := input.vaddr
+      this.isStore := true.B
+      this.isPrefetch := true.B
+    }
+
+    def fromL1PrefetchReqBundle(input: L1PrefetchReq) = {
+      this := 0.U.asTypeOf(this)
+      this.paddr      := input.paddr
+      this.vaddr      := input.getVaddr()
+      this.isStore    := input.is_store
+      this.pfSource   := input.pf_source
+      this.confidence := input.confidence
+      this.isPrefetch := true.B
+    }
   }
 
   class LsPrefetchTrainBundle(implicit p: Parameters) extends LsPipelineBundle {
@@ -240,7 +261,6 @@ object Bundles {
       isVector          := inputReg.isVector
       lastElem          := inputReg.lastElem
       is128bit          := inputReg.is128bit
-      instrType         := inputReg.instrType
       vecActive         := inputReg.vecActive
       firstEle          := inputReg.firstEle
       unitStrideFof     := inputReg.unitStrideFof
@@ -253,6 +273,7 @@ object Bundles {
       vecBaseVaddr      := inputReg.vecBaseVaddr
       vecVaddrOffset    := inputReg.vecVaddrOffset
       vecTriggerMask    := inputReg.vecTriggerMask
+      isAtomic          := inputReg.isAtomic
       src               := DontCare
       metaPrefetch      := DontCare
       metaAccess        := DontCare
@@ -277,6 +298,8 @@ object Bundles {
       dataInvalidSqIdx  := DontCare
       addrInvalidSqIdx  := DontCare
       flowNum           := DontCare
+      pfSource          := DontCare
+      confidence        := DontCare
     }
 
     def asPrefetchReqBundle(): PrefetchReqBundle = {
